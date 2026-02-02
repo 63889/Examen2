@@ -1,0 +1,25 @@
+services:
+  db:
+    # Look for the Dockerfile in the current directory
+    build: .
+    container_name: DUM_project
+
+    # Restart policy: keeps the DB running if it crashes or the PC restarts
+    restart: always
+
+    # Define environment variables for this container
+    environment:
+      POSTGRES_USER: root
+      POSTGRES_PASSWORD: root
+      POSTGRES_DB: main_db
+
+    # Map the container's port 5432 to the host's port 5434
+    ports: 
+      - "5434:5432"
+
+    # Mount a volume to persist database data
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+volumes:
+  pgdata:

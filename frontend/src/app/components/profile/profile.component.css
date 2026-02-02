@@ -1,0 +1,69 @@
+/* Card Container Base */
+.card {
+  border: none;
+  border-radius: 20px;
+  background: #ffffff;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+  overflow: hidden;
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+/* Edit Button - Sleek Corner Placement */
+.edit-btn {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  border-radius: 50%;
+  width: 35px;
+  height: 35px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.9);
+  border: 1px solid #eee;
+  color: #666;
+  opacity: 0;
+  transform: translateY(-5px);
+  transition: all 0.3s ease;
+}
+
+.card:hover .edit-btn {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.edit-btn:hover {
+  background: #007bff;
+  color: white;
+}
+
+/* Form Styling */
+.form-outline .form-control {
+  border-radius: 10px;
+  border: 1px solid #e0e0e0;
+  padding: 12px 15px;
+  transition: border-color 0.3s ease;
+}
+
+.form-outline .form-control:focus {
+  border-color: #007bff;
+  box-shadow: 0 0 0 0.25 darkgrey;
+}
+
+.form-label {
+  font-weight: 600;
+  color: #555;
+  margin-left: 5px;
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* Button Grouping */
+.btn-block {
+  width: 100%;
+  border-radius: 12px;
+  font-weight: 600;
+  padding: 12px;
+  margin-bottom: 10px;
+}
