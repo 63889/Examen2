@@ -31,7 +31,7 @@ export class LoginComponent implements OnInit {
     });
   }
 
-  login() {
+  async login() {
     this.isLoading = true;
     this.errorMessage = '';
     const loginRequest: LoginRequest = {
@@ -39,19 +39,29 @@ export class LoginComponent implements OnInit {
       password: this.password
     };
 
-    this.userService.loginUser(loginRequest).subscribe({
-      next: (response: any) => {
-        this.isLoading = false;
-        localStorage.setItem('access_token', response.access);
-        localStorage.setItem('refresh_token', response.refresh);
-        this.userService.loadUser();
-        this.router.navigate(['/dashboard'])
-      },
-      error: (err) => {
-        this.isLoading = false;
-        this.errorMessage = err.message;
-        console.error("Login failed ", err);
-      }
-    });
+    try {
+      await this.userService.loginUser(loginRequest);
+      this.router.navigate(['/dashboard/home']);
+    } catch (error: any) {
+      this.errorMessage = 'Invalid email or password.';
+      console.log(`Error: ${error}`);
+    } finally {
+      this.isLoading = false;
+    }
+
+    // this.userService.loginUser(loginRequest).subscribe({
+    //   next: (response: any) => {
+    //     this.isLoading = false;
+    //     localStorage.setItem('access_token', response.access);
+    //     localStorage.setItem('refresh_token', response.refresh);
+    //     this.userService.loadUser();
+    //     this.router.navigate(['/dashboard'])
+    //   },
+    //   error: (err) => {
+    //     this.isLoading = false;
+    //     this.errorMessage = err.message;
+    //     console.error("Login failed ", err);
+    //   }
+    // });
   }
 }

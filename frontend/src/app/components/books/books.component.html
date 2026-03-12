@@ -1,0 +1,195 @@
+<div *ngIf="!loading; else waiting" class="container mt-3">
+    <div class="card shadow-sm border-0">
+        <div class="card-header bg-white py-3 border-bottom-0">
+            <div class="row align-items-center">
+                <div class="col">
+                    <h5 class="mb-0 fw-bold text-dark">Books Inventory</h5>
+                    <small class="text-muted">Manage your collection</small>
+                </div>
+                <!-- <div class="col-auto">
+                    <button class="btn btn-primary btn-sm px-3 shadow-sm" (click)="goToBook()">
+                        <i class="bi bi-plus-lg me-1"></i> Add New Book
+                    </button>
+                </div> -->
+            </div>
+        </div>
+
+        <div class="card-body bg-light border-top border-bottom py-2">
+            <div class="row g-2 align-items-center">
+                <div class="col-md-5 col-lg-4">
+                    <div class="input-group input-group-sm">
+                        <span class="input-group-text bg-white border-end-0">
+                            <i class="bi bi-search text-muted"></i>
+                        </span>
+                        <input type="text" class="form-control border-start-0 ps-0"
+                            placeholder="Search by title, author, ISBN..." aria-label="Search" [(ngModel)]="query" (ngModelChange)="filterBooks()">
+                    </div>
+                </div>
+                <!-- <div class="col-auto">
+                    <select class="form-select form-select-sm shadow-none" style="width: auto;">
+                        <option selected>All Genres</option>
+                        <option>Fiction</option>
+                        <option>Science</option>
+                        <option>History</option>
+                    </select>
+                </div> -->
+                <div class="col-auto ms-auto">
+                    <span class="badge bg-white text-dark border fw-normal py-2 px-3">
+                        <!-- Show Total books -->
+                        Total: <strong>{{ books.length }}</strong> books
+                    </span>
+                </div>
+            </div>
+        </div>
+
+        <div class="table-responsive">
+            <table class="table table-sm table-hover mb-0 align-middle">
+                <thead class="table-light">
+                    <tr>
+                        <th class="ps-3" style="width: 50px;">#</th>
+                        <th>Book Details</th>
+                        <th>Author</th>
+                        <th>Publication Date</th>
+                        <th>Status</th>
+                        <th class="text-end pe-3">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @for (book of filteredBooks; track $index){
+                    <tr>
+                        <!-- book index -->
+                        <td class="ps-3 text-muted small">{{ $index + 1 }}</td>
+
+                        <div class="d-flex align-items-center">
+                            @if (book.thumbnail){
+                            <img [src]="book.thumbnail" class="rounded-1 me-2" alt="book cover"
+                                style="width: 30px; height: 40px;">
+                            } @else {
+                            <div class="bg-secondary rounded-1 me-2" style="width: 30px; height: 40px;"></div>
+                            }
+                            <div>
+                                <!-- Book details -->
+                                <div class="fw-bold mb-0" style="font-size: 0.9rem;">{{ book.title }}</div>
+                                <div class="text-muted" style="font-size: 0.75rem;">ISBN: {{ book.isbn }}</div>
+                            </div>
+                        </div>
+
+                        <!-- Author's name -->
+                        <td class="small">{{ (book.authors ?? []).join(', ') }}</td>
+                        <td class="small">{{ book.pub_date }}</td>
+                        <td>
+                            <!-- Validate availability -->
+                            @if ((book.digital_licenses_left ?? 0) > 0){
+                            <span
+                                class="badge rounded-pill bg-success-subtle text-success border border-success-subtle">Available</span>
+                            }@else{
+                            <span
+                                class="badge rounded-pill bg-success-subtle text-danger border border-danger-subtle">Unavailable</span>
+
+                            }
+                        </td>
+                        <td class="text-end pe-3">
+                            <button class="btn btn-link btn-sm text-secondary p-0 me-2" (click)="updateBook(book)"><i
+                                    class="bi bi-pencil"></i></button>
+                            <button class="btn btn-link btn-sm text-danger p-0" (click)="deleteBook(book.isbn)"><i
+                                    class="bi bi-trash"></i></button>
+                        </td>
+                    </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<ng-template #waiting>
+    <div class="spinner-border text-primary" role="status">
+        <span class="visually-hidden">Loading...</span>
+    </div>
+</ng-template>
+
+<!-- <div class="container mt-4">
+    <div class="d-flex align-items-center justify-content-between mb-4">
+        <h3 class="m-0">Books Management</h3>
+        <button class="btn btn-primary shadow-sm">
+            <i class="bi bi-plus-lg me-1"></i> Add Book
+        </button>
+    </div>
+
+    <div class="row mb-4">
+        <div class="col-12 col-md-6">
+            <div class="input-group">
+                <input type="search" class="form-control" placeholder="Search books by title, author..."
+                    aria-label="Search">
+                <button class="btn btn-primary" type="button">
+                    <i class="bi bi-search"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <hr class="my-4">
+
+    <div class="table-responsive">
+        <table class="table table-hover align-middle">
+            <thead class="table-light">
+                <tr>
+                    <th>#</th>
+                    <th>Thumbnail</th>
+                    <th>ISBN</th>
+                    <th>Title</th>
+                    <th>Available Digital Licenses</th>
+                    <th>Publication Date</th>
+                </tr>
+            </thead>
+            <tbody> -->
+
+
+<!-- @for(user of users; track $index){
+                <tr>
+                    <td>{{ $index + 1 }}</td>
+                    <td>
+                        <img [src]="user.profile_picture_url || 'http://localhost:8080/images/default.jpg'" alt="avatar"
+                            class="rounded-circle border border-2 shadow-sm"
+                            style="width: 45px; height: 45px; object-fit: cover; border-color: #709085 !important;">
+                    </td>
+                    <td>@if(user.isEditing) {
+                        <input class="form-control form-control-sm" [(ngModel)]="user.editData.first_name" />
+                        } @else {
+                        {{ user.first_name }}
+                        }
+                    </td>
+                    <td>
+                        @if(user.isEditing) {
+                        <input class="form-control form-control-sm" [(ngModel)]="user.editData.last_name" />
+                        } @else {
+                        {{ user.last_name }}
+                        }
+                    </td>
+                    <td>{{ user.email }}</td>
+                    <td>
+                        @if(!user.isEditing) {
+                        <div style="display: flex; gap: 10px;">
+                            <button class="btn btn-sm btn-outline-warning" (click)="enableEdit(user)">
+                                <i class="bi bi-pencil-square"></i>
+                            </button>
+                            <button class="btn btn-sm btn-outline-danger" (click)="deleteLibrarian(user)">
+                                <i class="bi bi-trash"></i>
+                            </button>
+                        </div>
+                        } @else {
+                        <div style="display: flex; gap: 10px;">
+                            <button class="btn btn-sm btn-outline-success" (click)="saveEdit(user)">
+                                <i class="bi bi-check-lg"></i>
+                            </button>
+                            <button class="btn btn-sm btn-outline-secondary" (click)="cancelEdit(user)">
+                                <i class="bi bi-x-lg"></i>
+                            </button>
+                        </div>
+                        }
+                    </td>
+                </tr>
+                } -->
+<!-- </tbody>
+        </table>
+    </div>
+</div> -->

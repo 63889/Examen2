@@ -1,0 +1,55 @@
+
+<div *ngIf="user$ | async as user; else waiting">
+  @if (!userService.isUser(user)){
+  <div class="landing-page"></div>
+  }@else{
+  <div class="container mt-5">
+    <header class="text-center mb-5">
+      <h2 class="display-6 fw-light mb-2">Are you ready to be AMAZED?</h2>
+      <div class="d-flex justify-content-center">
+        <div class="search-pill border rounded-pill d-flex align-items-center px-3 py-1 bg-light">
+          <i class="bi bi-search text-muted small me-2"></i>
+          <input type="text" class="form-control form-control-sm border-0 bg-transparent shadow-none"
+            placeholder="Looking for something...?" style="width: 200px;">
+        </div>
+      </div>
+    </header>
+
+    <div class="row row-cols-2 row-cols-md-3 row-cols-lg-5 g-4">
+      <div class="col" *ngFor="let book of books">
+        <div class="book-item text-center">
+          <div class="book-cover-wrapper mb-3">
+            @if (book.thumbnail){
+            <img [src]="book.thumbnail" class="book-cover img-fluid rounded-2">
+            } @else {
+            <div class="bg-secondary rounded-1 me-2" class="book-cover img-fluid rounded-2"home></div>
+            }
+            <!-- <img [src]="book.thumbnail || 'assets/default-cover.png'" class="book-cover img-fluid rounded-2"
+              [alt]="book.title"> -->
+            <div class="book-overlay rounded-2">
+              <button class="btn btn-light btn-sm rounded-pill shadow-sm" (click) = "toggleFavorite(book.isbn)">
+                @if (isFavorite(book.isbn)){
+                   <i class="bi bi-heart-fill"></i>
+                }@else{
+                  <i class="bi bi-heart"></i>
+                }
+              </button>
+            </div>
+          </div>
+
+          <div class="book-info">
+            <h6 class="text-dark fw-semibold mb-0 text-truncate px-2">{{ (book?.title ?? '') }}</h6>
+            <p class="text-muted small">{{ (book.authors ?? []).join(', ') }}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  }
+</div>
+
+<ng-template #waiting>
+  <div class="spinner-border text-primary" role="status">
+    <span class="visually-hidden">Loading...</span>
+  </div>
+</ng-template>

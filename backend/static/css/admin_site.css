@@ -1,0 +1,29 @@
+/* Ajusta el tamaño del avatar en la barra superior */
+.user-panel img, .brand-link img, .navbar-nav img.user-image {
+    width: 2.1rem !important; /* Aproximadamente 34-40px */
+    height: 2.1rem !important;
+    object-fit: cover; /* Evita que la imagen se estire feo */
+    border-radius: 50%; /* Lo hace un círculo perfecto */
+    border: 1px solid rgba(255,255,255,0.2);
+}
+
+/* Si también aparece grande en el menú desplegable */
+.dropdown-user-header img {
+    width: 80px !important;
+    height: 80px !important;
+    border-radius: 50%;
+    margin-bottom: 10px;
+}
+
+/* Esto obliga a que los paneles ocupen más ancho de pantalla */
+.card {
+    width: 100% !important;
+}
+
+/* Ajusta los formularios para que se expandan mejor */
+.field-box {
+    display: inline-block;
+    width: 48%; /* Dos columnas de casi el 50% */
+    margin-right: 2%;
+    vertical-align: top;
+}

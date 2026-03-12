@@ -23,7 +23,7 @@ export class RegisterComponent {
 
   constructor(private userService: UserService, private router: Router) { }
 
-  register() {
+  async register() {
     this.errorMessage = '';
 
     if (this.password != this.confirm_password) {
@@ -39,17 +39,27 @@ export class RegisterComponent {
       email: this.email,
       password: this.password
     };
+    
+    try{
+      await this.userService.registerUser(registerRequest);
+      this.router.navigate(['/login'], {queryParams: {registered: 'true'}});
+    }catch(error:any){
+      this.errorMessage = "User registration request failed.";
+      console.log(error);
+    }finally{
+      this.isLoading = false;
+    }
 
-    this.userService.registerUser(registerRequest).subscribe({
-      next: () => {
-        this.isLoading = false;
-        this.router.navigate(['/login'], { queryParams: { registered: 'true' } });
-      },
-      error: (err) => {
-        this.isLoading = false;
-        this.errorMessage = err.message;
-        console.log("User registration request failed ", err);
-      }
-    });
+    // this.userService.registerUser(registerRequest).subscribe({
+    //   next: () => {
+    //     this.isLoading = false;
+    //     this.router.navigate(['/login'], { queryParams: { registered: 'true' } });
+    //   },
+    //   error: (err) => {
+    //     this.isLoading = false;
+    //     this.errorMessage = err.message;
+    //     console.log("User registration request failed ", err);
+    //   }
+    // });
   }
 }

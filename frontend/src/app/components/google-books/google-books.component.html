@@ -1,0 +1,84 @@
+<div *ngIf="!loading; else waiting" class="container mt-3">
+    <div class="card shadow-sm border-0">
+        <div class="card-header bg-white py-3 border-bottom-0">
+            <div class="row align-items-center">
+                <div class="col">
+                    <h5 class="mb-0 fw-bold text-dark">Google Books</h5>
+                    <small class="text-muted">Look over books from google</small>
+                </div>
+            </div>
+        </div>
+
+        <div class="card-body bg-light border-top border-bottom py-2">
+            <div class="row g-2 align-items-center">
+                <div class="col-md-5 col-lg-4">
+                    <div class="input-group input-group-sm">
+                        <button class="input-group-text bg-white border-end-0" (click)="search()">
+                            <i class="bi bi-search text-muted"></i>
+                        </button>
+                        <input type="text" class="form-control border-start-0 ps-0"
+                            placeholder="Search by title, author, ISBN..." [(ngModel)]="searchQuery"
+                            (keydown.enter)="search()" />
+                    </div>
+                </div>
+                <div class="col-auto ms-auto">
+                    <span class="badge bg-white text-dark border fw-normal py-2 px-3">
+                        <!-- Show total books fetched-->
+                        Total: <strong>{{ books.length }}</strong> books
+                    </span>
+                </div>
+            </div>
+        </div>
+
+        <div class="table-responsive">
+            <table class="table table-sm table-hover mb-0 align-middle">
+                <thead class="table-light">
+                    <tr>
+                        <th class="ps-3" style="width: 50px;">#</th>
+                        <th>Book Details</th>
+                        <th>Author</th>
+                        <th>Publication Date</th>
+                        <th class="text-end pe-3">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @for (book of books; track $index){
+                    <tr>
+                        <!-- book index -->
+                        <td class="ps-3 text-muted small">{{ $index + 1}}</td>
+                        <td>
+                            <div class="d-flex align-items-center">
+                                @if (book.thumbnail){
+                                <img [src]="book.thumbnail" class="rounded-1 me-2" alt="book cover"
+                                    style="width: 30px; height: 40px;">
+                                } @else {
+                                <div class="bg-secondary rounded-1 me-2" style="width: 30px; height: 40px;"></div>
+                                }
+                                <div>
+                                    <!-- Book details -->
+                                    <div class="fw-bold mb-0" style="font-size: 0.9rem;">{{ book.title }}</div>
+                                    <div class="text-muted" style="font-size: 0.75rem;">ISBN: {{ book.isbn }}</div>
+                                </div>
+                            </div>
+                        </td>
+                        <!-- Author's name -->
+                        <td class="small">{{ (book.authors ?? []).join(', ') }}</td>
+                        <td class="small">{{ book.pub_date }}</td>
+                        <td class="text-end pe-3">
+                            <button class="btn btn-link btn-sm text-primary p-0 me-2" (click) = uploadGoogleBook($index)>
+                                <i class="bi bi-eye"></i>
+                            </button>
+                        </td>
+                    </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<ng-template #waiting>
+    <div class="spinner-border text-primary" role="status">
+        <span class="visually-hidden">Loading...</span>
+    </div>
+</ng-template>

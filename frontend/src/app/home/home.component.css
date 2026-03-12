@@ -1,0 +1,71 @@
+.landing-page{
+    background-image: url('http://localhost:8080/images/landing.jpg');
+    position:fixed;
+    /* top:0; */
+    left:0;
+    width: 100%;
+    height: 100%;
+
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+/* Limpieza del input de búsqueda */
+.search-pill {
+    transition: all 0.3s ease;
+    border: 1px solid #eee !important;
+}
+
+.search-pill:focus-within {
+    background-color: #fff !important;
+    border-color: #ddd !important;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+}
+
+/* Contenedor de la portada */
+.book-cover-wrapper {
+    position: relative;
+    display: inline-block;
+    width: 100%;
+    aspect-ratio: 2 / 3; /* Proporción estándar de libro */
+    transition: transform 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+}
+
+.book-cover {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.08); /* Sombra sutil */
+}
+
+/* Efecto Hover: Elevación y Overlay */
+.book-item:hover .book-cover-wrapper {
+    transform: translateY(-8px);
+}
+
+.book-overlay {
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(0, 0, 0, 0.2); /* Oscurecimiento muy leve */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.book-item:hover .book-overlay {
+    opacity: 1;
+}
+
+/* Tipografía */
+.book-info h6 {
+    font-size: 0.95rem;
+    letter-spacing: -0.01em;
+}
+
+.book-info p {
+    font-size: 0.8rem;
+    opacity: 0.7;
+}

@@ -10,12 +10,14 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/6.0/ref/settings/
 """
 
+import os
 from pathlib import Path
 from datetime import timedelta
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+MEDIA_ROOT = '/home/leo/Documents/1421-14/DUM/MyVeryOwnProyect/nginx/images/'
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/6.0/howto/deployment/checklist/
@@ -32,19 +34,31 @@ CORS_ALLOWED_ORIGINS = [
     "http://127.0.0.1:4200",
     ]
 
+CORS_ALLOW_HEADERS = [
+    "accept",
+    "authorization",
+    "content-type",
+    "user-agent",
+    "x-csrf-token",
+    "x-requested-with",
+]
 
 # Application definition
 
 INSTALLED_APPS = [
-    'django.contrib.admin',
+    # 'jazzmin',
+    # 'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
     "users.apps.UsersConfig", #users app
+    "catalog.apps.CatalogConfig", #book catalog app
+    "borrowing.apps.BorrowingConfig", #borrowing app
     "rest_framework",
     "rest_framework_simplejwt", 
+    "rest_framework_simplejwt.token_blacklist",
     "corsheaders",
 ]
 
@@ -58,9 +72,13 @@ REST_FRAMEWORK = {
 }
 
 SIMPLE_JWT ={
-    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=60), 
+    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=1), 
     "REFRESH_TOKEN_LIFETIME": timedelta(days=1),
+    "ROTATE_REFRESH_TOKENS": True,
+    "BLACKLIST_AFTER_ROTATION": True,
     "AUTH_HEADERS_TYPES": ("Bearer",),
+    "USER_IS_AUTHENTICATED": True,
+    "USER_AUTHENTICATION_RULE": "rest_framework_simplejwt.authentication.default_user_authentication_rule",
 }
 
 MIDDLEWARE = [
@@ -105,8 +123,19 @@ DATABASES = {
         'PASSWORD': 'root',
         'HOST': 'localhost',
         'PORT': 5434,
+    },
+    'book_catalog': {
+        'ENGINE': 'django_mongodb_backend',
+        'USER': 'root',
+        'PASSWORD': 'root',
+        'NAME': 'book_catalog_db',
+        'HOST': 'localhost',
+        'PORT': 27017
     }
+
 }
+
+DATABASE_ROUTERS = ['api.db_routers.UserRouter', 'api.db_routers.BookCatalogRouter', 'api.db_routers.BookBorrowingRouter']
 
 AUTH_USER_MODEL = 'users.User'
 
@@ -145,3 +174,24 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/6.0/howto/static-files/
 
 STATIC_URL = 'static/'
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'static')
+]
+
+JAZZMIN_SETTINGS = {
+    # Title of the window
+    "site_title": "Amazed",
+    # Title of the login screen
+    "site_header": "Amazed",
+    # Title on the brand
+    "site_brand": "Amazed",
+    # Site logo
+    "site_logo": "images/logo.png",
+    # Welcome text on the login screen
+    "welcome_sign": "Are you ready to be Amazed",
+    # User model's property that returns the user's avatar
+    "user_avatar" : "get_profile_picture",
+    "custom_css": "css/admin_site.css",
+    "show_ui_builder": True,
+
+}

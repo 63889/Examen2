@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { UserService } from '../../services/user.service';
-import { User } from '../../models/user.model';
 import { FormsModule } from '@angular/forms';
+import { LibrariansManagementService } from '../../services/librarians-management.service';
+import { User } from '../../models/user.model';
 
 @Component({
   selector: 'app-users',
@@ -10,37 +10,62 @@ import { FormsModule } from '@angular/forms';
   templateUrl: './users.component.html',
   styleUrl: './users.component.css'
 })
-export class UsersComponent{
-  // public first_name: string = '';
-  // public last_name: string = '';
-  // public email: string = '';
-  // public password: string = '';
-  
-  // users: User[] = [];
+export class UsersComponent implements OnInit {
+  public users: Array<User | any> = [];
+  public first_name: string = '';
+  public last_name: string = '';
+  public email: string = '';
+  public password: string = '';
+  public profile_picture_url: string = '';
+  // public waiting = false;
 
-  // constructor(private userService: UserService) { }
+  constructor(private libManagementService: LibrariansManagementService) { }
 
-  // ngOnInit(): void {
-  //   this.loadUsers();
-  // }
+  async ngOnInit() {
+    const data = await this.libManagementService.getAllLibrarians();
+    this.users = data;
+    console.log(data);
+  }
 
-  // loadUsers(): void {
-  //   this.userService.getUsers().subscribe(users => {
-  //     this.users = users;
-  //     console.log('Users loaded:', this.users);
-  //   });
-  // }
+  async addLibrarian() {
+    // this.waiting = true;
+    const addLibrarianRequest: User= {
+      first_name: this.first_name,
+      last_name: this.last_name,
+      email: this.email,
+      password: this.password
+    }
+    const response = await this.libManagementService.addLibrarian(addLibrarianRequest);
+    console.log(response.data);
+    this.users.push(response.data);
+    this.first_name = '';
+    this.last_name = '';
+    this.email = '';
+    this.password = '';
+    
+    // this.waiting = false;
+  }
+  enableEdit(user: User) {
+    user.isEditing = true;
+    user.editData = { ...user };
+  }
 
-  // addUser(): void {
-  //   const newUser: User = {
-  //     first_name: this.first_name,
-  //     last_name: this.last_name,
-  //     email: this.email,
-  //     password: this.password
-  //   };
-  //   this.userService.addUser(newUser).subscribe(user => {
-  //     this.users.push(user);
-  //   });
-  //   console.log("Adding new user:", newUser);
-  // }
+  cancelEdit(user: User) {
+    user.isEditing = false;
+    user.editData = null;
+  }
+
+  saveEdit(user: User){
+    this.libManagementService.updateLibrarian(user.editData).then(() => {
+      Object.assign(user, user.editData);
+      user.isEditing = false;
+    })
+  }
+
+  async deleteLibrarian(user:User){
+    const response = await this.libManagementService.deleteLibrarian(user);
+    if (response.status == 200) {
+      this.users  = this.users.filter(u => u.email !== user.email);
+    }
+  }
 }
