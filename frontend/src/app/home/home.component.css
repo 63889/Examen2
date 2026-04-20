@@ -1,5 +1,5 @@
 .landing-page{
-    background-image: url('http://localhost:8080/images/landing.jpg');
+    background-image: url('http://192.168.1.7:8080/images/landing.jpg');
     position:fixed;
     /* top:0; */
     left:0;

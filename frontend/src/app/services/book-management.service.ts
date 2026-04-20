@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import api from '../auth.interceptor';
 import { Book } from '../models/book.model';
 import { BehaviorSubject, Observable } from 'rxjs';
+import axios from 'axios';
 
 @Injectable({
   providedIn: 'root'
@@ -64,4 +65,17 @@ export class BookManagementService {
     const response = await api.delete('/catalog/remove_favorite_book/', { data: { isbn }});
     return await response.data;
   }
+
+  // OPEN LIBRARY'S EXTERNAL API
+  // getBookPreviewData(isbn: string) {
+  //   const bibKey = `ISBN:${isbn}`;
+  //   axios.get(`https://openlibrary.org/api/books?bibkeys=${bibKey}&format=json&jscmd=viewapi`)
+  //   .then(res => {
+  //     console.log(res);
+  //     console.log(res.data);
+
+  //   }).catch(error => {
+  //     console.log(`Error: ${error}`);
+  //   });
+  // }
 }

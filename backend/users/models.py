@@ -53,7 +53,7 @@ class User(AbstractUser):
     def get_profile_picture(self):
         if hasattr(self, 'profile_picture') and self.profile_picture:
             return self.profile_picture.get_full_url
-        return "http://localhost:8080/images/default.jpg"
+        return "http://192.168.1.7:8080/images/default.jpg"
     
     @property
     def is_admin(self):
@@ -87,6 +87,6 @@ class ProfilePicture(models.Model):
     @property
     def get_full_url(self):
         if self.image_uri:
-            return f"http://localhost:8080/images/{self.image_uri}"
-        return "http://localhost:8080/images/default.jpg"
+            return f"http://192.168.1.7:8080/images/{self.image_uri}"
+        return "http://192.168.1.7:8080/images/default.jpg"
     

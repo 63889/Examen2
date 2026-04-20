@@ -17,7 +17,8 @@ from datetime import timedelta
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-MEDIA_ROOT = '/home/leo/Documents/1421-14/DUM/MyVeryOwnProyect/nginx/images/'
+# MEDIA_ROOT = '/home/leo/Documents/1421-14/DUM/MyVeryOwnProyect/nginx/images/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/6.0/howto/deployment/checklist/
@@ -28,10 +29,11 @@ SECRET_KEY = 'django-insecure-i@po519zarm)97reaf=red_2_+-7b3rnqs22u)z7(u9v-zjrij
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["localhost", "127.0.0.1", "192.168.1.7"]
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:4200",
     "http://127.0.0.1:4200",
+    "http://192.168.1.7:4200",
     ]
 
 CORS_ALLOW_HEADERS = [
@@ -82,14 +84,14 @@ SIMPLE_JWT ={
 }
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
-    'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'corsheaders.middleware.CorsMiddleware',
+    'django.middleware.clickjacking.XFrameOptionsMiddleware'
 ]
 
 ROOT_URLCONF = 'api.urls'
@@ -121,15 +123,15 @@ DATABASES = {
         'NAME': 'main_db',
         'USER': 'root',
         'PASSWORD': 'root',
-        'HOST': 'localhost',
-        'PORT': 5434,
+        'HOST': 'dumppostgres',
+        'PORT': 5432,
     },
     'book_catalog': {
         'ENGINE': 'django_mongodb_backend',
         'USER': 'root',
         'PASSWORD': 'root',
         'NAME': 'book_catalog_db',
-        'HOST': 'localhost',
+        'HOST': 'dumpmongo',
         'PORT': 27017
     }
 

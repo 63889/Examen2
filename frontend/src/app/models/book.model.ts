@@ -14,7 +14,6 @@ export interface Book{
     is_active: boolean,
 }
 
-
 // interface Review{
 //     authors_name: string,
 //     authors_email: string,
